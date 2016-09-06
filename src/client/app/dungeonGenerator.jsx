@@ -53,25 +53,25 @@ export class DungeonGenerator extends React.Component {
         //1,2,3,4
         var myArray=[1,2,3,4]
         var rand=myArray[Math.floor(Math.random() * myArray.length)]
-            return this.props.tiles[rand];
+            return this.state.tiles[rand];
             break;
         case 'E':
         //1,2,3,5,6
             var myArray=[1,2,3,5,6]
             var rand=myArray[Math.floor(Math.random() * myArray.length)]
-            return this.props.tiles[rand];
+            return this.state.tiles[rand];
             break;
         case 'S':
         //0,1,4,5
             var myArray=[0,1,4,5]
             var rand=myArray[Math.floor(Math.random() * myArray.length)]
-            return this.props.tiles[rand];
+            return this.state.tiles[rand];
             break;
         case 'N':
         //0,3,4,5
             var myArray=[0,3,4,5]
             var rand=myArray[Math.floor(Math.random() * myArray.length)]
-            return this.props.tiles[rand];
+            return this.state.tiles[rand];
             break;
     
      } 
@@ -154,12 +154,12 @@ export class DungeonGenerator extends React.Component {
       }
     }
   	generate(props){
-
+console.log('generating');
       var map=Array(parseInt(props.gridWidth)).fill().map(() => Array(parseInt(props.gridHeight)).fill(0));
-console.log(map);
+
   		var dungeon=[];
       //get a start tile
-      var startTile=props.tiles[1];
+      var startTile=this.state.tiles[1];
        var startX=Math.floor(props.gridWidth/2);
        var startY=Math.floor(props.gridHeight/2);
         dungeon.push(this.convertToDungeonTile(startTile,startX,startY,'start'));
@@ -169,12 +169,14 @@ console.log(map);
 
   	}
   	componentDidMount(){
-  		this.generate(this.props);
+      console.log(this.props.tiles)
+      this.setState({tiles:this.props.tiles},
+  		function(){this.generate(this.props);});
 
   	}
     componentWillReceiveProps(nextProps){
-
-      this.generate(nextProps); 
+      this.setState({tiles:nextProps.tiles},
+      function(){this.generate(this.props);});
     }
 	render(){
 		return <DungeonMap height={this.props.gridHeight*this.props.scale} width={this.props.gridWidth*this.props.scale} tiles={this.state.dungeon}/>;
@@ -182,48 +184,48 @@ console.log(map);
 }
 DungeonGenerator.defaultProps={tiles:[
         {
-          image:"./public/images/up.PNG", 
+          image:"./public/images/sewer/up.PNG", 
           width:4,
           height:4, 
           connectors:[{orientation:'N',distance:2},{orientation:'S',distance:2}]
         },
         {
-          image:"./public/images/T.png", 
+          image:"./public/images/sewer/T.png", 
           width:4,
           height:4, 
           connectors:[{orientation:'W',distance:2},{orientation:'S',distance:2},{orientation:'E',distance:2}]
         },
         {
-          image:"./public/images/side.png", 
+          image:"./public/images/sewer/side.png", 
           width:4,
           height:4, 
           connectors:[{orientation:'W',distance:2},{orientation:'E',distance:2}]
         },
         {
-          image:"./public/images/iT.png", 
+          image:"./public/images/sewer/iT.png", 
           width:4,
           height:4, 
           connectors:[{orientation:'W',distance:2},{orientation:'N',distance:2},{orientation:'E',distance:2}]
         },
         {
-          image:"./public/images/lT.png", 
+          image:"./public/images/sewer/lT.png", 
           width:4,
           height:4, 
           connectors:[{orientation:'W',distance:2},{orientation:'N',distance:2},{orientation:'S',distance:2}]
         },
         {
-          image:"./public/images/rT.png", 
+          image:"./public/images/sewer/rT.png", 
           width:4,
           height:4, 
           connectors:[{orientation:'E',distance:2},{orientation:'N',distance:2},{orientation:'S',distance:2}]
         },
         {
-          image:"./public/images/floor.jpg", 
+          image:"./public/images/sewer/floor.jpg", 
           width:4,
           height:8, 
           connectors:[{orientation:'E',distance:2}]
         },
       ],
       scale:20,
-      gridWidth:30,
-      gridHeight:30}
+      gridWidth:25,
+      gridHeight:25}
