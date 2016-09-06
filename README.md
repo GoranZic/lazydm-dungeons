@@ -22,7 +22,9 @@ it works completly offline.
  * exporting/saving the map
  * configurable generator
 
-
+#Credits
+* cave set tiles used made by Sims URL: http://www.dundjinni.com/art/user_art.asp
+* sewer tiles, a french blog I found the tiles were free, but I have to find the URL.
 
 
 
