@@ -22111,33 +22111,13 @@
 	    key: 'randomTile',
 	    value: function randomTile(orientation) {
 	      //this should get a random tile by orientation
-	      switch (orientation) {
-	        case 'W':
-	          //1,2,3,4
-	          var myArray = [1, 2, 3, 4];
-	          var rand = myArray[Math.floor(Math.random() * myArray.length)];
-	          return this.state.tiles[rand];
-	          break;
-	        case 'E':
-	          //1,2,3,5,6
-	          var myArray = [1, 2, 3, 5, 6];
-	          var rand = myArray[Math.floor(Math.random() * myArray.length)];
-	          return this.state.tiles[rand];
-	          break;
-	        case 'S':
-	          //0,1,4,5
-	          var myArray = [0, 1, 4, 5];
-	          var rand = myArray[Math.floor(Math.random() * myArray.length)];
-	          return this.state.tiles[rand];
-	          break;
-	        case 'N':
-	          //0,3,4,5
-	          var myArray = [0, 3, 4, 5];
-	          var rand = myArray[Math.floor(Math.random() * myArray.length)];
-	          return this.state.tiles[rand];
-	          break;
+	      var validTiles = this.state.tiles.filter(function (tile) {
+	        return tile.connectors.filter(function (connector) {
+	          return connector.orientation == orientation;
+	        }).length > 0;
+	      });
 	
-	      }
+	      return validTiles[Math.floor(Math.random() * validTiles.length)];
 	    }
 	  }, {
 	    key: 'getNewTilePosition',
@@ -22226,7 +22206,6 @@
 	  }, {
 	    key: 'generate',
 	    value: function generate(props) {
-	      console.log('generating');
 	      var map = Array(parseInt(props.gridWidth)).fill().map(function () {
 	        return Array(parseInt(props.gridHeight)).fill(0);
 	      });
@@ -22244,7 +22223,7 @@
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      console.log(this.props.tiles);
+	
 	      this.setState({ tiles: this.props.tiles }, function () {
 	        this.generate(this.props);
 	      });
@@ -23350,94 +23329,125 @@
 	"use strict";
 	
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 	
 	var _redux = __webpack_require__(/*! redux */ 175);
 	
+	var _tileSets = __webpack_require__(/*! ../data/tileSets */ 191);
+	
+	var _tileSets2 = _interopRequireDefault(_tileSets);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
 	//tile reducer
 	function tiles() {
-	  var state = arguments.length <= 0 || arguments[0] === undefined ? [{ setName: "cave set", tiles: [{
-	      image: "./public/images/castle/up.PNG",
-	      width: 4,
-	      height: 4,
-	      connectors: [{ orientation: 'N', distance: 2 }, { orientation: 'S', distance: 2 }]
-	    }, {
-	      image: "./public/images/castle/T.png",
-	      width: 4,
-	      height: 4,
-	      connectors: [{ orientation: 'W', distance: 2 }, { orientation: 'S', distance: 2 }, { orientation: 'E', distance: 2 }]
-	    }, {
-	      image: "./public/images/castle/side.png",
-	      width: 4,
-	      height: 4,
-	      connectors: [{ orientation: 'W', distance: 2 }, { orientation: 'E', distance: 2 }]
-	    }, {
-	      image: "./public/images/castle/iT.png",
-	      width: 4,
-	      height: 4,
-	      connectors: [{ orientation: 'W', distance: 2 }, { orientation: 'N', distance: 2 }, { orientation: 'E', distance: 2 }]
-	    }, {
-	      image: "./public/images/castle/lT.png",
-	      width: 4,
-	      height: 4,
-	      connectors: [{ orientation: 'W', distance: 2 }, { orientation: 'N', distance: 2 }, { orientation: 'S', distance: 2 }]
-	    }, {
-	      image: "./public/images/castle/rT.png",
-	      width: 4,
-	      height: 4,
-	      connectors: [{ orientation: 'E', distance: 2 }, { orientation: 'N', distance: 2 }, { orientation: 'S', distance: 2 }]
-	    }, {
-	      image: "./public/images/castle/floor.jpg",
-	      width: 4,
-	      height: 8,
-	      connectors: [{ orientation: 'E', distance: 2 }]
-	    }]
-	  }, { setName: 'sewer set', tiles: [{
-	      image: "./public/images/sewer/up.PNG",
-	      width: 4,
-	      height: 4,
-	      connectors: [{ orientation: 'N', distance: 2 }, { orientation: 'S', distance: 2 }]
-	    }, {
-	      image: "./public/images/sewer/T.png",
-	      width: 4,
-	      height: 4,
-	      connectors: [{ orientation: 'W', distance: 2 }, { orientation: 'S', distance: 2 }, { orientation: 'E', distance: 2 }]
-	    }, {
-	      image: "./public/images/sewer/side.png",
-	      width: 4,
-	      height: 4,
-	      connectors: [{ orientation: 'W', distance: 2 }, { orientation: 'E', distance: 2 }]
-	    }, {
-	      image: "./public/images/sewer/iT.png",
-	      width: 4,
-	      height: 4,
-	      connectors: [{ orientation: 'W', distance: 2 }, { orientation: 'N', distance: 2 }, { orientation: 'E', distance: 2 }]
-	    }, {
-	      image: "./public/images/sewer/lT.png",
-	      width: 4,
-	      height: 4,
-	      connectors: [{ orientation: 'W', distance: 2 }, { orientation: 'N', distance: 2 }, { orientation: 'S', distance: 2 }]
-	    }, {
-	      image: "./public/images/sewer/rT.png",
-	      width: 4,
-	      height: 4,
-	      connectors: [{ orientation: 'E', distance: 2 }, { orientation: 'N', distance: 2 }, { orientation: 'S', distance: 2 }]
-	    }, {
-	      image: "./public/images/sewer/floor.jpg",
-	      width: 4,
-	      height: 8,
-	      connectors: [{ orientation: 'E', distance: 2 }]
-	    }]
-	  }] : arguments[0];
-	  var action = arguments[1];
+	    var state = arguments.length <= 0 || arguments[0] === undefined ? _tileSets2.default : arguments[0];
+	    var action = arguments[1];
 	
-	  return state;
+	    return state;
 	}
 	
 	var rootReducer = (0, _redux.combineReducers)({ tiles: tiles });
 	
 	exports.default = rootReducer;
+
+/***/ },
+/* 191 */
+/*!*****************************************!*\
+  !*** ./src/client/app/data/tileSets.js ***!
+  \*****************************************/
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var tileSets = [{ setName: "castle set", tiles: [{
+	    image: "./public/images/castle/up.PNG",
+	    width: 5,
+	    height: 5,
+	    connectors: [{ orientation: 'N', distance: 2 }, { orientation: 'S', distance: 2 }]
+	  }, {
+	    image: "./public/images/castle/T.png",
+	    width: 5,
+	    height: 5,
+	    connectors: [{ orientation: 'W', distance: 2 }, { orientation: 'S', distance: 2 }, { orientation: 'E', distance: 2 }]
+	  }, {
+	    image: "./public/images/castle/side.png",
+	    width: 5,
+	    height: 5,
+	    connectors: [{ orientation: 'W', distance: 2 }, { orientation: 'E', distance: 2 }]
+	  }, {
+	    image: "./public/images/castle/iT.png",
+	    width: 5,
+	    height: 5,
+	    connectors: [{ orientation: 'W', distance: 2 }, { orientation: 'N', distance: 2 }, { orientation: 'E', distance: 2 }]
+	  }, {
+	    image: "./public/images/castle/lT.png",
+	    width: 5,
+	    height: 5,
+	    connectors: [{ orientation: 'W', distance: 2 }, { orientation: 'N', distance: 2 }, { orientation: 'S', distance: 2 }]
+	  }, {
+	    image: "./public/images/castle/rT.png",
+	    width: 5,
+	    height: 5,
+	    connectors: [{ orientation: 'E', distance: 2 }, { orientation: 'N', distance: 2 }, { orientation: 'S', distance: 2 }]
+	  }, {
+	    image: "./public/images/castle/stairs-S.png",
+	    width: 15,
+	    height: 3,
+	    connectors: [{ orientation: 'S', distance: 1 }]
+	  }, {
+	    image: "./public/images/castle/junctionthesim.png",
+	    width: 5,
+	    height: 5,
+	    connectors: [{ orientation: 'E', distance: 2 }, { orientation: 'N', distance: 2 }, { orientation: 'S', distance: 2 }, { orientation: 'W', distance: 2 }]
+	  }, {
+	    image: "./public/images/castle/room8-e.png",
+	    width: 6,
+	    height: 6,
+	    connectors: [{ orientation: 'W', distance: 2 }]
+	  }]
+	}, { setName: 'sewer set', tiles: [{
+	    image: "./public/images/sewer/up.PNG",
+	    width: 4,
+	    height: 4,
+	    connectors: [{ orientation: 'N', distance: 2 }, { orientation: 'S', distance: 2 }]
+	  }, {
+	    image: "./public/images/sewer/T.png",
+	    width: 4,
+	    height: 4,
+	    connectors: [{ orientation: 'W', distance: 2 }, { orientation: 'S', distance: 2 }, { orientation: 'E', distance: 2 }]
+	  }, {
+	    image: "./public/images/sewer/side.png",
+	    width: 4,
+	    height: 4,
+	    connectors: [{ orientation: 'W', distance: 2 }, { orientation: 'E', distance: 2 }]
+	  }, {
+	    image: "./public/images/sewer/iT.png",
+	    width: 4,
+	    height: 4,
+	    connectors: [{ orientation: 'W', distance: 2 }, { orientation: 'N', distance: 2 }, { orientation: 'E', distance: 2 }]
+	  }, {
+	    image: "./public/images/sewer/lT.png",
+	    width: 4,
+	    height: 4,
+	    connectors: [{ orientation: 'W', distance: 2 }, { orientation: 'N', distance: 2 }, { orientation: 'S', distance: 2 }]
+	  }, {
+	    image: "./public/images/sewer/rT.png",
+	    width: 4,
+	    height: 4,
+	    connectors: [{ orientation: 'E', distance: 2 }, { orientation: 'N', distance: 2 }, { orientation: 'S', distance: 2 }]
+	  }, {
+	    image: "./public/images/sewer/floor.jpg",
+	    width: 4,
+	    height: 8,
+	    connectors: [{ orientation: 'E', distance: 2 }]
+	  }]
+	}];
+	exports.default = tileSets;
 
 /***/ }
 /******/ ]);

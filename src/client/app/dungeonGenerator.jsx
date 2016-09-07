@@ -48,33 +48,10 @@ export class DungeonGenerator extends React.Component {
     }
     randomTile(orientation){
       //this should get a random tile by orientation
-      switch(orientation) {
-        case 'W':
-        //1,2,3,4
-        var myArray=[1,2,3,4]
-        var rand=myArray[Math.floor(Math.random() * myArray.length)]
-            return this.state.tiles[rand];
-            break;
-        case 'E':
-        //1,2,3,5,6
-            var myArray=[1,2,3,5,6]
-            var rand=myArray[Math.floor(Math.random() * myArray.length)]
-            return this.state.tiles[rand];
-            break;
-        case 'S':
-        //0,1,4,5
-            var myArray=[0,1,4,5]
-            var rand=myArray[Math.floor(Math.random() * myArray.length)]
-            return this.state.tiles[rand];
-            break;
-        case 'N':
-        //0,3,4,5
-            var myArray=[0,3,4,5]
-            var rand=myArray[Math.floor(Math.random() * myArray.length)]
-            return this.state.tiles[rand];
-            break;
-    
-     } 
+      var validTiles=this.state.tiles.filter( tile => tile.connectors.filter(connector => connector.orientation==orientation).length>0);
+      
+      return validTiles[Math.floor(Math.random()*validTiles.length)];
+      
     }
     getNewTilePosition(oldTile,newTile,x,y,connectorIndex){
       var xModifier;
@@ -154,7 +131,6 @@ export class DungeonGenerator extends React.Component {
       }
     }
   	generate(props){
-console.log('generating');
       var map=Array(parseInt(props.gridWidth)).fill().map(() => Array(parseInt(props.gridHeight)).fill(0));
 
   		var dungeon=[];
@@ -169,7 +145,7 @@ console.log('generating');
 
   	}
   	componentDidMount(){
-      console.log(this.props.tiles)
+     
       this.setState({tiles:this.props.tiles},
   		function(){this.generate(this.props);});
 
